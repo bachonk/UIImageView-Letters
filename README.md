@@ -10,11 +10,11 @@ An easy, helpful UIImageView category that generates letter initials as a placeh
 
 ### Usage
 
-1. In the file where you want to use the category, be sure to import the file. 
+In the file where you want to use the category, be sure to import the file. 
 
 `#importUIImageView+Letter.h`
 
-2. Call the method `setImageWithString:color:` on any `UIImageView` instance
+Call the method `setImageWithString:color:` on any `UIImageView` instance to set the image.
 
 The string will be interpreted as a name, and will use the initials of the first and last word in the string provided
 If a color is not provided, a random color will be generated.
