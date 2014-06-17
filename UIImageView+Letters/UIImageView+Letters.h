@@ -29,6 +29,12 @@
 
 @interface UIImageView (Letters)
 
+/**
+ Sets the image property of the view to have a background color and initial text
+ 
+ @param string The string used to generate the initials. This should be a user's full name if available
+ @param color (optional) This optional paramter sets the background of the image. If not provided, a random color will be generated
+ */
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color;
 
 @end
