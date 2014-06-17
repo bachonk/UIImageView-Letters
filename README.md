@@ -18,8 +18,9 @@ In the file where you want to use the category, be sure to import the file.
 
 Call the method `setImageWithString:color:` on any `UIImageView` instance to set the image.
 
-`string` is the string used to generate the initials. This should be a user's full name if available
-`color` is an optional paramter sets the background of the image. If not provided, a random color will be generated
+`string` is the string used to generate the initials. This should be a user's full name if available.
+
+`color` is an optional paramter sets the background of the image. If not provided, a random color will be generated.
 
 ### License
 
