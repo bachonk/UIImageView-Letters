@@ -3,6 +3,8 @@ UIImageView+Letters
 
 An easy, helpful UIImageView category that generates letter initials as a placeholder for user profile images, with a randomized background color
 
+![Example screenshot](http://i.imgur.com/nlH7ig0.png)
+
 ### Installation
 
 1. Drag the `UIImageView+Letter.{h,m}` files into your project
