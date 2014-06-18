@@ -20,7 +20,7 @@ Call the method `setImageWithString:color:` on any `UIImageView` instance to set
 
 `string` is the string used to generate the initials. This should be a user's full name if available.
 
-`color` is an optional paramter sets the background of the image. If not provided, a random color will be generated.
+`color` is an optional parameter that sets the background color of the image. Pass in `nil` to have a color automatically generated for you.
 
 ### License
 
