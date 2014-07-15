@@ -26,6 +26,10 @@
 
 @implementation UIImageView (Letters)
 
+- (void)setImageWithString:(NSString *)string {
+    [self setImageWithString:string color:nil];
+}
+
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color {
     
     //
@@ -102,7 +106,6 @@
     
     CGFloat scale = [UIScreen mainScreen].scale;
     
-    // Code attributed to Nick Lockwood on 25/08/2013.
     CGSize size = self.bounds.size;
     if (self.contentMode == UIViewContentModeScaleToFill ||
         self.contentMode == UIViewContentModeScaleAspectFill ||
