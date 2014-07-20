@@ -45,10 +45,6 @@ UIImageView *myImgView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 5
 [myImgView setImageWithString:userName];
 ```
 
-### Future Goals
-
-+ CocoaPod support
-
 ### License
 
 Using the MIT license. See license file for details.
