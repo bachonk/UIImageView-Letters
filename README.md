@@ -17,14 +17,14 @@ Check out the [official guide](http://guides.cocoapods.org/using/index.html) for
 
 ##### Manual
 
-1. Drag the `UIImageView+Letter.{h,m}` files into your project
+1. Drag the `UIImageView+Letters.{h,m}` files into your project
 2. Enjoy!
 
 ### Usage
 
 In the file where you want to use the category, be sure to import the file. 
 
-`#import "UIImageView+Letter.h"`
+`#import "UIImageView+Letters.h"`
 
 ##### Methods
 
