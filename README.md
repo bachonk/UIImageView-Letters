@@ -45,6 +45,10 @@ UIImageView *myImgView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 5
 [myImgView setImageWithString:userName];
 ```
 
+### Saying Thanks
+
+If you like this tool, show your support by downloading the free [Reach Contact List](https://itunes.apple.com/us/app/reach-your-contact-list/id898802540?mt=8) app that inspired it!
+
 ### License
 
 Using the MIT license. See license file for details.
