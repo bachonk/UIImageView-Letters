@@ -51,15 +51,15 @@
     NSArray *words = [string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([words count]) {
-        NSString *firstWord = words[0];
+        NSString *firstWord = [words firstObject];
         if ([firstWord length]) {
-            [displayString appendString:[firstWord substringWithRange:NSMakeRange(0, 1)]];
+            [displayString appendString:[firstWord substringToIndex:1]];
         }
         
         if ([words count] >= 2) {
-            NSString *lastWord = words[[words count] - 1];
+            NSString *lastWord = [words lastObject];
             if ([lastWord length]) {
-                [displayString appendString:[lastWord substringWithRange:NSMakeRange(0, 1)]];
+                [displayString appendString:[lastWord substringToIndex:1]];
             }
         }
     }
