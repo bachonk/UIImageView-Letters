@@ -52,7 +52,9 @@
                 lastWord = [words lastObject];
             }
             
-            [displayString appendString:[lastWord substringToIndex:1]];
+            if([words count] > 1) {
+                 [displayString appendString:[lastWord substringToIndex:1]];
+            }
         }
     }
     
