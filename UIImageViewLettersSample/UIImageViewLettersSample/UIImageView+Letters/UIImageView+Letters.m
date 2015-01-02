@@ -33,22 +33,26 @@
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color {
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
     
-    NSArray *words = [string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
     
     //
     // Get first letter of the first and last word
     //
     if ([words count]) {
         NSString *firstWord = [words firstObject];
-        if ([firstWord length]) {
+        if ([firstWord length] != 0) {
             [displayString appendString:[firstWord substringToIndex:1]];
         }
         
         if ([words count] >= 2) {
             NSString *lastWord = [words lastObject];
-            if ([lastWord length]) {
-                [displayString appendString:[lastWord substringToIndex:1]];
+            
+            while([lastWord length] == 0 && [words count] >= 2) {
+                [words removeLastObject];
+                lastWord = [words lastObject];
             }
+            
+            [displayString appendString:[lastWord substringToIndex:1]];
         }
     }
     
