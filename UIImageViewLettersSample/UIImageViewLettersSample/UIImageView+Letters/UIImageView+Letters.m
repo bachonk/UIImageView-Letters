@@ -108,13 +108,6 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //
-    // Clip context to a circle
-    //
-    CGPathRef path = CGPathCreateWithEllipseInRect(self.bounds, NULL);
-    CGContextAddPath(context, path);
-    CGContextClip(context);
-    
-    //
     // Fill background of context
     //
     CGContextSetFillColorWithColor(context, color.CGColor);
