@@ -15,6 +15,8 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *nameField;
 
+@property (nonatomic, weak) IBOutlet UISwitch *circularSwitch;
+
 - (IBAction)refreshSampleImage:(id)sender;
 
 @end

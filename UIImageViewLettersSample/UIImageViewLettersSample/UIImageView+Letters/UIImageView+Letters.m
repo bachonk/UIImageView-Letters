@@ -117,6 +117,15 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
+    if (isCircular) {
+        //
+        // Clip context to a circle
+        //
+        CGPathRef path = CGPathCreateWithEllipseInRect(self.bounds, NULL);
+        CGContextAddPath(context, path);
+        CGContextClip(context);
+    }
+    
     //
     // Fill background of context
     //
@@ -130,15 +139,6 @@
     CGRect bounds = self.bounds;
     [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2, bounds.size.height/2 - textSize.height/2, textSize.width, textSize.height)
       withAttributes:@{NSFontAttributeName:[self fontForText], NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
-    if (isCircular) {
-        //
-        // Clip context to a circle
-        //
-        CGPathRef path = CGPathCreateWithEllipseInRect(self.bounds, NULL);
-        CGContextAddPath(context, path);
-        CGContextClip(context);
-    }
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

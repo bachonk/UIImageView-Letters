@@ -21,26 +21,10 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     /**
-     * Make the image look a little nicer
-     */
-    
-    // Set corner radius
-    _sampleImageView.layer.cornerRadius = CGRectGetHeight(_sampleImageView.frame) / 2;
-    _sampleImageView.clipsToBounds = YES;
-
-    // Add border
-    _sampleImageView.layer.borderColor = [[UIColor colorWithWhite:0.84f alpha:1.0f] CGColor];
-    _sampleImageView.layer.borderWidth = 3.0f;
-    
-    // Add shadow
-    _sampleImageView.layer.shadowOffset = CGSizeMake(0, 0);
-    _sampleImageView.layer.shadowRadius = 1.5;
-    _sampleImageView.layer.shadowOpacity = 0.3;
-    
-    /**
      * Let's start with a sample
      */
     _nameField.text = @"Michael Bluth"; // everyone's favorite son
+    _circularSwitch.on = NO;
     [self refreshSampleImage:nil];
     
 }
@@ -54,7 +38,7 @@
 
 - (IBAction)refreshSampleImage:(id)sender {
     
-    [_sampleImageView setImageWithString:_nameField.text];
+    [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn];
     
 }
 
