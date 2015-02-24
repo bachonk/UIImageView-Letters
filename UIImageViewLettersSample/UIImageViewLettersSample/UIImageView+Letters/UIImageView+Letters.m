@@ -24,13 +24,23 @@
 
 #import "UIImageView+Letters.h"
 
+@interface UIImageView (LettersPrivate)
+
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular;
+
+@end
+
 @implementation UIImageView (Letters)
 
 - (void)setImageWithString:(NSString *)string {
-    [self setImageWithString:string color:nil];
+    [self setImageWithString:string color:nil circular:NO];
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color {
+    [self setImageWithString:string color:color circular:NO];
+}
+
+- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular {
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
     
     NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
@@ -60,7 +70,7 @@
     
     UIColor *backgroundColor = color ? color : [self randomColor];
     
-    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor];
+    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular];
 }
 
 #pragma mark - Helpers
@@ -89,7 +99,7 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color {
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular {
     
     CGFloat scale = [UIScreen mainScreen].scale;
     
@@ -106,6 +116,15 @@
     UIGraphicsBeginImageContextWithOptions(size, NO, scale);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (isCircular) {
+        //
+        // Clip context to a circle
+        //
+        CGPathRef path = CGPathCreateWithEllipseInRect(self.bounds, NULL);
+        CGContextAddPath(context, path);
+        CGContextClip(context);
+    }
     
     //
     // Fill background of context
