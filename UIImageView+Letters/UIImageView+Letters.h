@@ -54,4 +54,14 @@
  */
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular;
 
+/**
+ Sets the image property of the view based on initial text, a specified background color, a custom font, and a circular clipping
+ 
+ @param string The string used to generate the initials. This should be a user's full name if available
+ @param color (optional) This optional paramter sets the background of the image. If not provided, a random color will be generated
+ @param isCircular This boolean will determine if the image view will be clipped to a circular shape
+ @param fontName will use a custom font rather than System Font
+ */
+- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontWithName: (NSString *) fontName;
+
 @end

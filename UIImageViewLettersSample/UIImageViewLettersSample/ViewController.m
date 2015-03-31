@@ -38,7 +38,14 @@
 
 - (IBAction)refreshSampleImage:(id)sender {
     
-    [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn];
+    if (_useFuturaSwitch.isOn) {
+        [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn fontWithName:@"Futura-Medium"];
+    } else {
+        [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn];
+    }
+    
+    
+    
     
 }
 
