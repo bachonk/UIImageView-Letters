@@ -33,12 +33,15 @@ Call the following methods on any `UIImageView` instance to set the image:
 + `- (void)setImageWithString:(NSString *)string`
 + `- (void)setImageWithString:(NSString *)string color:(UIColor *)color`
 + `- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular`
++ `- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontWithName: (NSString *) fontName`
 
 `string` is the string used to generate the initials. This should be a user's full name if available.
 
 `color` is an optional parameter that sets the background color of the image. Pass in `nil` to have a color automatically generated for you.
 
 `isCircular` is a boolean parameter that will automatically clip the image to a circle if enabled.
+
+`fontName` is a NSString that specifies a custom font. See all String Identifiers for built in iOS fonts [here](http://iosfonts.com). 
 
 ##### Example
 
