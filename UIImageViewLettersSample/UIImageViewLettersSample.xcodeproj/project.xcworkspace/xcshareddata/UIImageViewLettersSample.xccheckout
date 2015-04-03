@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>A3F1ED25-0928-4526-9FF8-C73C2AFAA60A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>UIImageViewLettersSample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9FFD21C6A65AE22198CFA6E939DC569037B4263C</key>
+		<string>github.com:MattFaluotico/UIImageView-Letters.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>UIImageViewLettersSample/UIImageViewLettersSample.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9FFD21C6A65AE22198CFA6E939DC569037B4263C</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:MattFaluotico/UIImageView-Letters.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9FFD21C6A65AE22198CFA6E939DC569037B4263C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9FFD21C6A65AE22198CFA6E939DC569037B4263C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>UIImageView-Letters</string>
+		</dict>
+	</array>
+</dict>
+</plist>

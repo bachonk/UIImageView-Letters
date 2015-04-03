@@ -17,6 +17,8 @@
 
 @property (nonatomic, weak) IBOutlet UISwitch *circularSwitch;
 
+@property (weak, nonatomic) IBOutlet UISwitch *useFuturaSwitch;
+
 - (IBAction)refreshSampleImage:(id)sender;
 
 @end

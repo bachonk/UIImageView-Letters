@@ -26,7 +26,7 @@
 
 @interface UIImageView (LettersPrivate)
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular;
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName: (NSString*) fontName;
 
 @end
 
@@ -41,6 +41,10 @@
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular {
+    [self setImageWithString:string color:color circular:isCircular fontWithName:nil];
+}
+
+- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontWithName: (NSString *) fontName {
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
     
     NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
@@ -63,20 +67,26 @@
             }
             
             if([words count] > 1) {
-                 [displayString appendString:[lastWord substringToIndex:1]];
+                [displayString appendString:[lastWord substringToIndex:1]];
             }
         }
     }
     
     UIColor *backgroundColor = color ? color : [self randomColor];
     
-    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular];
+    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular fontName:fontName];
 }
 
 #pragma mark - Helpers
 
-- (UIFont *)fontForText {
-    return [UIFont systemFontOfSize:CGRectGetWidth(self.bounds) * 0.48];
+- (UIFont *)fontForText: (NSString *) fontName {
+    
+    if (fontName) {
+        return [UIFont fontWithName:fontName size:CGRectGetWidth(self.bounds) * 0.48];
+    } else {
+        return [UIFont systemFontOfSize:CGRectGetWidth(self.bounds) * 0.48];
+    }
+    
 }
 
 - (UIColor *)randomColor {
@@ -99,7 +109,7 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular {
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString *)fontName{
     
     CGFloat scale = [UIScreen mainScreen].scale;
     
@@ -136,10 +146,10 @@
     //
     // Draw text in the context
     //
-    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText]}];
+    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText: fontName]}];
     CGRect bounds = self.bounds;
     [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2, bounds.size.height/2 - textSize.height/2, textSize.width, textSize.height)
-      withAttributes:@{NSFontAttributeName:[self fontForText], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+      withAttributes:@{NSFontAttributeName:[self fontForText: fontName], NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
