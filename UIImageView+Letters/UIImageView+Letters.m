@@ -24,27 +24,30 @@
 
 #import "UIImageView+Letters.h"
 
+// This multiplier sets the font size based on the view bounds
+static const CGFloat kFontResizingProportion = 0.48f;
+
 @interface UIImageView (LettersPrivate)
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName: (NSString*) fontName;
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString*)fontName;
 
 @end
 
 @implementation UIImageView (Letters)
 
 - (void)setImageWithString:(NSString *)string {
-    [self setImageWithString:string color:nil circular:NO];
+    [self setImageWithString:string color:nil circular:NO fontName:nil];
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color {
-    [self setImageWithString:string color:color circular:NO];
+    [self setImageWithString:string color:color circular:NO fontName:nil];
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular {
-    [self setImageWithString:string color:color circular:isCircular fontWithName:nil];
+    [self setImageWithString:string color:color circular:isCircular fontName:nil];
 }
 
-- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontWithName: (NSString *) fontName {
+- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontName: (NSString *)fontName {
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
     
     NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
@@ -61,12 +64,12 @@
         if ([words count] >= 2) {
             NSString *lastWord = [words lastObject];
             
-            while([lastWord length] == 0 && [words count] >= 2) {
+            while ([lastWord length] == 0 && [words count] >= 2) {
                 [words removeLastObject];
                 lastWord = [words lastObject];
             }
             
-            if([words count] > 1) {
+            if ([words count] > 1) {
                 [displayString appendString:[lastWord substringToIndex:1]];
             }
         }
@@ -79,12 +82,14 @@
 
 #pragma mark - Helpers
 
-- (UIFont *)fontForText: (NSString *) fontName {
+- (UIFont *)fontForText:(NSString *)fontName {
     
+    CGFloat fontSize = CGRectGetWidth(self.bounds) * kFontResizingProportion;
     if (fontName) {
-        return [UIFont fontWithName:fontName size:CGRectGetWidth(self.bounds) * 0.48];
-    } else {
-        return [UIFont systemFontOfSize:CGRectGetWidth(self.bounds) * 0.48];
+        return [UIFont fontWithName:fontName size:fontSize];
+    }
+    else {
+        return [UIFont systemFontOfSize:fontSize];
     }
     
 }
@@ -109,7 +114,7 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString *)fontName{
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString *)fontName {
     
     CGFloat scale = [UIScreen mainScreen].scale;
     
@@ -149,7 +154,7 @@
     CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText: fontName]}];
     CGRect bounds = self.bounds;
     [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2, bounds.size.height/2 - textSize.height/2, textSize.width, textSize.height)
-      withAttributes:@{NSFontAttributeName:[self fontForText: fontName], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+      withAttributes:@{NSFontAttributeName:[self fontForText:fontName], NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

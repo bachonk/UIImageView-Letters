@@ -39,7 +39,7 @@
 - (IBAction)refreshSampleImage:(id)sender {
     
     if (_useFuturaSwitch.isOn) {
-        [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn fontWithName:@"Futura-Medium"];
+        [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn fontName:@"Futura-Medium"];
     } else {
         [_sampleImageView setImageWithString:_nameField.text color:nil circular:_circularSwitch.isOn];
     }

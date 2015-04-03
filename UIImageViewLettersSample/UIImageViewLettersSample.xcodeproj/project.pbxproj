@@ -14,8 +14,8 @@
 		C855D2F21A00593300A5B693 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C855D2F11A00593300A5B693 /* Images.xcassets */; };
 		C855D2F51A00593300A5B693 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C855D2F31A00593300A5B693 /* LaunchScreen.xib */; };
 		C855D3011A00593300A5B693 /* UIImageViewLettersSampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C855D3001A00593300A5B693 /* UIImageViewLettersSampleTests.m */; };
-		C855D30D1A0059F200A5B693 /* UIImageView+Letters.m in Sources */ = {isa = PBXBuildFile; fileRef = C855D30C1A0059F200A5B693 /* UIImageView+Letters.m */; };
 		C855D30F1A005B1600A5B693 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C855D30E1A005B1600A5B693 /* QuartzCore.framework */; };
+		C86C71DC1ACF0731007BD322 /* UIImageView+Letters.m in Sources */ = {isa = PBXBuildFile; fileRef = C86C71DB1ACF0731007BD322 /* UIImageView+Letters.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,9 +42,9 @@
 		C855D2FA1A00593300A5B693 /* UIImageViewLettersSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIImageViewLettersSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C855D2FF1A00593300A5B693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C855D3001A00593300A5B693 /* UIImageViewLettersSampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIImageViewLettersSampleTests.m; sourceTree = "<group>"; };
-		C855D30B1A0059F200A5B693 /* UIImageView+Letters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Letters.h"; sourceTree = "<group>"; };
-		C855D30C1A0059F200A5B693 /* UIImageView+Letters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Letters.m"; sourceTree = "<group>"; };
 		C855D30E1A005B1600A5B693 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C86C71DA1ACF0731007BD322 /* UIImageView+Letters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Letters.h"; sourceTree = "<group>"; };
+		C86C71DB1ACF0731007BD322 /* UIImageView+Letters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Letters.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +88,7 @@
 		C855D2E31A00593300A5B693 /* UIImageViewLettersSample */ = {
 			isa = PBXGroup;
 			children = (
-				C855D30A1A0059F200A5B693 /* UIImageView+Letters */,
+				C86C71D91ACF0731007BD322 /* UIImageView+Letters */,
 				C855D2E81A00593300A5B693 /* AppDelegate.h */,
 				C855D2E91A00593300A5B693 /* AppDelegate.m */,
 				C855D2EB1A00593300A5B693 /* ViewController.h */,
@@ -127,13 +127,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C855D30A1A0059F200A5B693 /* UIImageView+Letters */ = {
+		C86C71D91ACF0731007BD322 /* UIImageView+Letters */ = {
 			isa = PBXGroup;
 			children = (
-				C855D30B1A0059F200A5B693 /* UIImageView+Letters.h */,
-				C855D30C1A0059F200A5B693 /* UIImageView+Letters.m */,
+				C86C71DA1ACF0731007BD322 /* UIImageView+Letters.h */,
+				C86C71DB1ACF0731007BD322 /* UIImageView+Letters.m */,
 			);
-			path = "UIImageView+Letters";
+			name = "UIImageView+Letters";
+			path = "../../UIImageView+Letters";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,7 +239,7 @@
 			files = (
 				C855D2ED1A00593300A5B693 /* ViewController.m in Sources */,
 				C855D2EA1A00593300A5B693 /* AppDelegate.m in Sources */,
-				C855D30D1A0059F200A5B693 /* UIImageView+Letters.m in Sources */,
+				C86C71DC1ACF0731007BD322 /* UIImageView+Letters.m in Sources */,
 				C855D2E71A00593300A5B693 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
