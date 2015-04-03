@@ -58,7 +58,9 @@ static const CGFloat kFontResizingProportion = 0.48f;
     if ([words count]) {
         NSString *firstWord = [words firstObject];
         if ([firstWord length] != 0) {
-            [displayString appendString:[firstWord substringToIndex:1]];
+            // Get character range to handle emoji (emojis consist of 2 characters in sequence)
+            NSRange firstLetterRange = [firstWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
+            [displayString appendString:[firstWord substringWithRange:firstLetterRange]];
         }
         
         if ([words count] >= 2) {
@@ -70,7 +72,9 @@ static const CGFloat kFontResizingProportion = 0.48f;
             }
             
             if ([words count] > 1) {
-                [displayString appendString:[lastWord substringToIndex:1]];
+                // Get character range to handle emoji (emojis consist of 2 characters in sequence)
+                NSRange lastLetterRange = [lastWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
+                [displayString appendString:[lastWord substringWithRange:lastLetterRange]];
             }
         }
     }
@@ -151,10 +155,17 @@ static const CGFloat kFontResizingProportion = 0.48f;
     //
     // Draw text in the context
     //
-    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText: fontName]}];
+    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText:fontName]}];
     CGRect bounds = self.bounds;
-    [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2, bounds.size.height/2 - textSize.height/2, textSize.width, textSize.height)
-      withAttributes:@{NSFontAttributeName:[self fontForText:fontName], NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
+    [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2,
+                                bounds.size.height/2 - textSize.height/2,
+                                textSize.width,
+                                textSize.height)
+      withAttributes:@{
+                       NSFontAttributeName:[self fontForText:fontName],
+                       NSForegroundColorAttributeName:[UIColor whiteColor]
+                       }];
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
