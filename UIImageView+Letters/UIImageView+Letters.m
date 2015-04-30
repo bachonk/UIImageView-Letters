@@ -155,17 +155,18 @@ static const CGFloat kFontResizingProportion = 0.48f;
     //
     // Draw text in the context
     //
-    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText:fontName]}];
+    NSDictionary *textAttributes = @{
+        NSFontAttributeName:[self fontForText:fontName],
+        NSForegroundColorAttributeName:[UIColor whiteColor]
+    };
+    CGSize textSize = [text sizeWithAttributes:textAttributes];
     CGRect bounds = self.bounds;
     
     [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2,
                                 bounds.size.height/2 - textSize.height/2,
                                 textSize.width,
                                 textSize.height)
-      withAttributes:@{
-                       NSFontAttributeName:[self fontForText:fontName],
-                       NSForegroundColorAttributeName:[UIColor whiteColor]
-                       }];
+      withAttributes:textAttributes];
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
