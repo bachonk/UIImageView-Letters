@@ -48,6 +48,10 @@ static const CGFloat kFontResizingProportion = 0.48f;
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontName: (NSString *)fontName {
+    [self setImageWithString:string color:color circular:isCircular textAttributes:[self defaultTextAttributesForFontName:fontName]];
+}
+
+- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)textAttributes {
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
     
     NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
@@ -80,8 +84,8 @@ static const CGFloat kFontResizingProportion = 0.48f;
     }
     
     UIColor *backgroundColor = color ? color : [self randomColor];
-    
-    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular fontName:fontName];
+
+    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular textAttributes:textAttributes];
 }
 
 #pragma mark - Helpers
@@ -118,7 +122,14 @@ static const CGFloat kFontResizingProportion = 0.48f;
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString *)fontName {
+- (NSDictionary *)defaultTextAttributesForFontName:(NSString *)fontName {
+    return @{
+        NSFontAttributeName:[self fontForText:fontName],
+        NSForegroundColorAttributeName:[UIColor whiteColor]
+    };
+}
+
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)textAttributes {
     
     CGFloat scale = [UIScreen mainScreen].scale;
     
@@ -155,17 +166,14 @@ static const CGFloat kFontResizingProportion = 0.48f;
     //
     // Draw text in the context
     //
-    CGSize textSize = [text sizeWithAttributes:@{NSFontAttributeName:[self fontForText:fontName]}];
+    CGSize textSize = [text sizeWithAttributes:textAttributes];
     CGRect bounds = self.bounds;
     
     [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2,
                                 bounds.size.height/2 - textSize.height/2,
                                 textSize.width,
                                 textSize.height)
-      withAttributes:@{
-                       NSFontAttributeName:[self fontForText:fontName],
-                       NSForegroundColorAttributeName:[UIColor whiteColor]
-                       }];
+      withAttributes:textAttributes];
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
