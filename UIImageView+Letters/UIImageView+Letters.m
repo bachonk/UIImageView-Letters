@@ -25,33 +25,43 @@
 #import "UIImageView+Letters.h"
 
 // This multiplier sets the font size based on the view bounds
-static const CGFloat kFontResizingProportion = 0.48f;
+static const CGFloat kFontResizingProportion = 0.42f;
 
 @interface UIImageView (LettersPrivate)
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString*)fontName;
+- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)attributes;
 
 @end
 
 @implementation UIImageView (Letters)
 
 - (void)setImageWithString:(NSString *)string {
-    [self setImageWithString:string color:nil circular:NO fontName:nil];
+    [self setImageWithString:string color:nil circular:NO textAttributes:nil];
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color {
-    [self setImageWithString:string color:color circular:NO fontName:nil];
+    [self setImageWithString:string color:color circular:NO textAttributes:nil];
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular {
-    [self setImageWithString:string color:color circular:isCircular fontName:nil];
+    [self setImageWithString:string color:color circular:isCircular textAttributes:nil];
 }
 
-- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontName: (NSString *)fontName {
-    [self setImageWithString:string color:color circular:isCircular textAttributes:[self defaultTextAttributesForFontName:fontName]];
+- (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular fontName:(NSString *)fontName {
+    [self setImageWithString:string color:color circular:isCircular textAttributes:@{
+                                                                                     NSFontAttributeName:[self fontForFontName:fontName],
+                                                                                     NSForegroundColorAttributeName: [UIColor whiteColor]
+                                                                                     }];
 }
 
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)textAttributes {
+    if (!textAttributes) {
+        textAttributes = @{
+                           NSFontAttributeName: [self fontForFontName:nil],
+                           NSForegroundColorAttributeName: [UIColor whiteColor]
+                           };
+    }
+    
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
     
     NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
@@ -61,7 +71,7 @@ static const CGFloat kFontResizingProportion = 0.48f;
     //
     if ([words count]) {
         NSString *firstWord = [words firstObject];
-        if ([firstWord length] != 0) {
+        if ([firstWord length]) {
             // Get character range to handle emoji (emojis consist of 2 characters in sequence)
             NSRange firstLetterRange = [firstWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
             [displayString appendString:[firstWord substringWithRange:firstLetterRange]];
@@ -90,7 +100,7 @@ static const CGFloat kFontResizingProportion = 0.48f;
 
 #pragma mark - Helpers
 
-- (UIFont *)fontForText:(NSString *)fontName {
+- (UIFont *)fontForFontName:(NSString *)fontName {
     
     CGFloat fontSize = CGRectGetWidth(self.bounds) * kFontResizingProportion;
     if (fontName) {
@@ -120,13 +130,6 @@ static const CGFloat kFontResizingProportion = 0.48f;
     }
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
-}
-
-- (NSDictionary *)defaultTextAttributesForFontName:(NSString *)fontName {
-    return @{
-        NSFontAttributeName:[self fontForText:fontName],
-        NSForegroundColorAttributeName:[UIColor whiteColor]
-    };
 }
 
 - (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)textAttributes {
