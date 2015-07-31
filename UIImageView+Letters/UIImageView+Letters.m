@@ -114,6 +114,8 @@ static const CGFloat kFontResizingProportion = 0.42f;
 
 - (UIColor *)randomColor {
     
+    srand48(arc4random());
+    
     float red = 0.0;
     while (red < 0.1 || red > 0.84) {
         red = drand48();
