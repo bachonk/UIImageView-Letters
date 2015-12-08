@@ -152,6 +152,10 @@ static const CGFloat kFontResizingProportion = 0.42f;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
+    if (context == NULL) {
+        return NULL;
+    }
+    
     if (isCircular) {
         //
         // Clip context to a circle
