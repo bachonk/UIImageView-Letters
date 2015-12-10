@@ -94,7 +94,7 @@ static const CGFloat kFontResizingProportion = 0.42f;
     }
     
     UIColor *backgroundColor = color ? color : [self randomColor];
-
+    
     self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular textAttributes:textAttributes];
 }
 
@@ -153,6 +153,7 @@ static const CGFloat kFontResizingProportion = 0.42f;
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     if (context == NULL) {
+        UIGraphicsEndImageContext();
         return NULL;
     }
     
