@@ -29,7 +29,7 @@ static const CGFloat kFontResizingProportion = 0.42f;
 
 @interface UIImageView (LettersPrivate)
 
-+ (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes;
++ (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes showGradient: (BOOL) showGradient;
 
 @end
 
@@ -64,7 +64,7 @@ static const CGFloat kFontResizingProportion = 0.42f;
     
     UIColor *backgroundColor = color ? color : [self randomColor];
     
-    self.image = [UIImageView imageSnapshotFromText:string backgroundColor:backgroundColor circular:isCircular contentMode: self.contentMode targetSize: self.bounds.size textAttributes:textAttributes];
+    self.image = [UIImageView imageSnapshotFromText:string backgroundColor:backgroundColor circular:isCircular contentMode: self.contentMode targetSize: self.bounds.size textAttributes:textAttributes showGradient: true];
 }
 
 #pragma mark - Helpers
@@ -103,7 +103,7 @@ static const CGFloat kFontResizingProportion = 0.42f;
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
-+ (UIImage *)imageSnapshotFromText:(NSString *)string backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes {
++ (UIImage *)imageSnapshotFromText:(NSString *)string backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes showGradient:(BOOL)showGradient {
     
     
     NSMutableString *displayString = [NSMutableString stringWithString:@""];
@@ -172,8 +172,31 @@ static const CGFloat kFontResizingProportion = 0.42f;
     //
     // Fill background of context
     //
-    CGContextSetFillColorWithColor(context, color.CGColor);
-    CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    if (!showGradient) {
+        CGContextSetFillColorWithColor(context, color.CGColor);
+        CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    } else {
+        CGFloat hue, saturation, brightness;
+        [color getHue:&hue saturation:&saturation brightness:&brightness alpha:0];
+        brightness += 0.2;
+        if (brightness>1) {
+            brightness = 1;
+        }
+        NSArray *colors = @[(__bridge id) color.CGColor, (__bridge id) [UIColor colorWithHue:hue saturation: saturation brightness: brightness alpha: 1].CGColor];//[[UIColor whiteColor] CGColor]];
+        
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGFloat locations[] = { 0.0, 1.0 };
+        CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+        
+        CGPoint startPoint = CGPointMake(0, 0);
+        CGPoint endPoint = CGPointMake(0, targetSize.height);
+        CGContextSaveGState(context);
+        CGContextAddRect(context, CGRectMake(0, 0, targetSize.width, targetSize.height));
+        CGContextClip(context);
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+        CGContextRestoreGState(context);
+    }
+    
     
     //
     // Draw text in the context
