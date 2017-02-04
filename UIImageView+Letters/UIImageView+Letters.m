@@ -29,7 +29,7 @@ static const CGFloat kFontResizingProportion = 0.42f;
 
 @interface UIImageView (LettersPrivate)
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)attributes;
++ (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes showGradient: (BOOL) showGradient;
 
 @end
 
@@ -62,40 +62,9 @@ static const CGFloat kFontResizingProportion = 0.42f;
                            };
     }
     
-    NSMutableString *displayString = [NSMutableString stringWithString:@""];
-    
-    NSMutableArray *words = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
-    
-    //
-    // Get first letter of the first and last word
-    //
-    if ([words count]) {
-        NSString *firstWord = [words firstObject];
-        if ([firstWord length]) {
-            // Get character range to handle emoji (emojis consist of 2 characters in sequence)
-            NSRange firstLetterRange = [firstWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
-            [displayString appendString:[firstWord substringWithRange:firstLetterRange]];
-        }
-        
-        if ([words count] >= 2) {
-            NSString *lastWord = [words lastObject];
-            
-            while ([lastWord length] == 0 && [words count] >= 2) {
-                [words removeLastObject];
-                lastWord = [words lastObject];
-            }
-            
-            if ([words count] > 1) {
-                // Get character range to handle emoji (emojis consist of 2 characters in sequence)
-                NSRange lastLetterRange = [lastWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
-                [displayString appendString:[lastWord substringWithRange:lastLetterRange]];
-            }
-        }
-    }
-    
     UIColor *backgroundColor = color ? color : [self randomColor];
-
-    self.image = [self imageSnapshotFromText:[displayString uppercaseString] backgroundColor:backgroundColor circular:isCircular textAttributes:textAttributes];
+    
+    self.image = [UIImageView imageSnapshotFromText:string backgroundColor:backgroundColor circular:isCircular contentMode: self.contentMode targetSize: self.bounds.size textAttributes:textAttributes showGradient: true];
 }
 
 #pragma mark - Helpers
@@ -134,15 +103,48 @@ static const CGFloat kFontResizingProportion = 0.42f;
     return [UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
 }
 
-- (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)textAttributes {
++ (UIImage *)imageSnapshotFromText:(NSString *)string backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes showGradient:(BOOL)showGradient {
+    
+    
+    NSMutableString *displayString = [NSMutableString stringWithString:@""];
+    
+    NSMutableArray *words = [[[string  uppercaseString] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] mutableCopy];
+    
+    //
+    // Get first letter of the first and last word
+    //
+    if ([words count]) {
+        NSString *firstWord = [words firstObject];
+        if ([firstWord length]) {
+            // Get character range to handle emoji (emojis consist of 2 characters in sequence)
+            NSRange firstLetterRange = [firstWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
+            [displayString appendString:[firstWord substringWithRange:firstLetterRange]];
+        }
+        
+        if ([words count] >= 2) {
+            NSString *lastWord = [words lastObject];
+            
+            while ([lastWord length] == 0 && [words count] >= 2) {
+                [words removeLastObject];
+                lastWord = [words lastObject];
+            }
+            
+            if ([words count] > 1) {
+                // Get character range to handle emoji (emojis consist of 2 characters in sequence)
+                NSRange lastLetterRange = [lastWord rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, 1)];
+                [displayString appendString:[lastWord substringWithRange:lastLetterRange]];
+            }
+        }
+    }
+    
     
     CGFloat scale = [UIScreen mainScreen].scale;
     
-    CGSize size = self.bounds.size;
-    if (self.contentMode == UIViewContentModeScaleToFill ||
-        self.contentMode == UIViewContentModeScaleAspectFill ||
-        self.contentMode == UIViewContentModeScaleAspectFit ||
-        self.contentMode == UIViewContentModeRedraw)
+    CGSize size = targetSize;
+    if (contentMode == UIViewContentModeScaleToFill ||
+        contentMode == UIViewContentModeScaleAspectFill ||
+        contentMode == UIViewContentModeScaleAspectFit ||
+        contentMode == UIViewContentModeRedraw)
     {
         size.width = floorf(size.width * scale) / scale;
         size.height = floorf(size.height * scale) / scale;
@@ -152,11 +154,16 @@ static const CGFloat kFontResizingProportion = 0.42f;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
+    if (context == NULL) {
+        UIGraphicsEndImageContext();
+        return NULL;
+    }
+    
     if (isCircular) {
         //
         // Clip context to a circle
         //
-        CGPathRef path = CGPathCreateWithEllipseInRect(self.bounds, NULL);
+        CGPathRef path = CGPathCreateWithEllipseInRect(CGRectMake(0, 0, size.width, size.height), NULL);
         CGContextAddPath(context, path);
         CGContextClip(context);
         CGPathRelease(path);
@@ -165,20 +172,43 @@ static const CGFloat kFontResizingProportion = 0.42f;
     //
     // Fill background of context
     //
-    CGContextSetFillColorWithColor(context, color.CGColor);
-    CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    if (!showGradient) {
+        CGContextSetFillColorWithColor(context, color.CGColor);
+        CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
+    } else {
+        CGFloat hue, saturation, brightness;
+        [color getHue:&hue saturation:&saturation brightness:&brightness alpha:0];
+        brightness += 0.2;
+        if (brightness>1) {
+            brightness = 1;
+        }
+        NSArray *colors = @[(__bridge id) color.CGColor, (__bridge id) [UIColor colorWithHue:hue saturation: saturation brightness: brightness alpha: 1].CGColor];//[[UIColor whiteColor] CGColor]];
+        
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGFloat locations[] = { 0.0, 1.0 };
+        CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+        
+        CGPoint startPoint = CGPointMake(0, 0);
+        CGPoint endPoint = CGPointMake(0, targetSize.height);
+        CGContextSaveGState(context);
+        CGContextAddRect(context, CGRectMake(0, 0, targetSize.width, targetSize.height));
+        CGContextClip(context);
+        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+        CGContextRestoreGState(context);
+    }
+    
     
     //
     // Draw text in the context
     //
-    CGSize textSize = [text sizeWithAttributes:textAttributes];
-    CGRect bounds = self.bounds;
+    CGSize textSize = [displayString sizeWithAttributes:textAttributes];
+    CGRect bounds = CGRectMake(0, 0, size.width, size.height);
     
-    [text drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2,
-                                bounds.size.height/2 - textSize.height/2,
-                                textSize.width,
-                                textSize.height)
-      withAttributes:textAttributes];
+    [displayString drawInRect:CGRectMake(bounds.size.width/2 - textSize.width/2,
+                                         bounds.size.height/2 - textSize.height/2,
+                                         textSize.width,
+                                         textSize.height)
+               withAttributes:textAttributes];
     
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

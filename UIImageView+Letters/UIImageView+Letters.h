@@ -74,4 +74,6 @@
  */
 - (void)setImageWithString:(NSString *)string color:(UIColor *)color circular:(BOOL)isCircular textAttributes:(NSDictionary *)textAttributes;
 
++ (UIImage *)imageSnapshotFromText:(NSString *)text backgroundColor:(UIColor *)color circular:(BOOL)isCircular contentMode: (UIViewContentMode)contentMode targetSize: (CGSize)targetSize textAttributes:(NSDictionary *)textAttributes showGradient:(BOOL) showGradient;
+
 @end
