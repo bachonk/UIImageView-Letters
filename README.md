@@ -3,6 +3,8 @@ UIImageView+Letters
 
 An easy, helpful UIImageView category that generates letter initials as a placeholder for user profile images, with a randomized background color
 
+*Note: Looking for a Swift 3 compatible version? Check out the new [InitialsImageView](https://github.com/bachonk/InitialsImageView) extension, rewritten entirely in Swift!*
+
 ![Example screenshot](http://i.imgur.com/xSBjVQ7.png)
 
 ### Installation
