@@ -5,7 +5,7 @@ An easy, helpful UIImageView category that generates letter initials as a placeh
 
 *Note: Looking for a Swift 3 compatible version? Check out the new [InitialsImageView](https://github.com/bachonk/InitialsImageView) extension, rewritten entirely in Swift!*
 
-![Example screenshot](http://i.imgur.com/xSBjVQ7.png)
+![Example screenshot](https://i.imgur.com/KE8OfrL.png)
 
 ### Installation
 
